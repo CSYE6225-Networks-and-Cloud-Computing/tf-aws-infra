@@ -19,7 +19,7 @@ This repository contains Terraform configuration files to set up an AWS networki
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
-
+ 
 - [Terraform](https://www.terraform.io/downloads.html) (version 1.4.0 or later)
 - [AWS CLI](https://aws.amazon.com/cli/)
 - An [AWS account](https://aws.amazon.com/)
