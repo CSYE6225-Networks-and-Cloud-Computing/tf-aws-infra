@@ -36,3 +36,25 @@ variable "public_route_cidr" {
   description = "CIDR block for public route"
   type        = string
 }
+
+variable "ami_id" {
+  description = "CIDR block for the VPC"
+  type        = string
+}
+
+variable "instance_type" {
+  type = string
+}
+
+variable "key_pair_name" {
+  type    = string
+  default = "aws_key_pair"
+}
+
+variable "app_port" {
+  type = number
+}
+
+variable "project_name" {
+  type = string
+}
