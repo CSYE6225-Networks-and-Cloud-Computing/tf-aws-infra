@@ -38,7 +38,7 @@ variable "public_route_cidr" {
 }
 
 variable "ami_id" {
-  description = "CIDR block for the VPC"
+  description = "AMI_ID for the instance"
   type        = string
 }
 
@@ -52,9 +52,20 @@ variable "key_pair_name" {
 }
 
 variable "app_port" {
-  type = number
+  type    = number
+  default = 3000
 }
 
 variable "project_name" {
   type = string
+}
+
+variable "db_password" {
+  type    = string
+  default = "csye6225"
+}
+
+variable "db_port" {
+  type    = number
+  default = 5432
 }
