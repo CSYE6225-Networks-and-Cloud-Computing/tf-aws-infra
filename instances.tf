@@ -74,7 +74,7 @@ resource "aws_instance" "web_app" {
     volume_type           = "gp2"
     delete_on_termination = true
   }
-
+  depends_on = [aws_db_instance.csye6225_db]
   # 
   # user_data = (<<-EOF
   #   #!/bin/bash
