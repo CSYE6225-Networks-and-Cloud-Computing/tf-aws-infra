@@ -53,7 +53,7 @@ data "aws_ami" "custom_ami" {
   //edit AMI name here!!!
   filter {
     name   = "name"
-    values = ["ami_a06-1730332380"]
+    values = ["ami_a06-1730346762"]
   }
 
   filter {
@@ -97,9 +97,7 @@ resource "aws_instance" "web_app" {
 
     # Start CloudWatch agent
     sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
-    # Start CloudWatch agent
-    sudo systemctl start amazon-cloudwatch-agent
-    
+    sudo amazon-cloudwatch-agent-ctl -a start
     # Restart webapp service
     systemctl restart webapp.service
   EOF
