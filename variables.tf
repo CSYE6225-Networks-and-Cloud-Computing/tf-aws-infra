@@ -69,3 +69,34 @@ variable "db_port" {
   type    = number
   default = 5432
 }
+
+variable "environment" {
+  description = "Deployment environment (dev or demo)"
+  type        = string
+  default     = "dev"
+}
+
+variable "dev_domain_name" {
+  description = "domain name for dev account"
+  type        = string
+}
+
+variable "dev_route53_zone_id" {
+  description = "value of dev route53 zone id"
+  type        = string
+}
+
+variable "demo_domain_name" {
+  description = "domain name for demo account"
+  type        = string
+}
+
+variable "demo_route53_zone_id" {
+  description = "value of demo route53 zone id"
+  type        = string
+}
+
+variable "sendgrid_api_key" {
+  description = "Sendgrid API key"
+  type        = string
+}

@@ -53,7 +53,7 @@ data "aws_ami" "custom_ami" {
   //edit AMI name here!!!
   filter {
     name   = "name"
-    values = ["ami_a05-1729621179*"]
+    values = ["ami_a06-1730332380"]
   }
 
   filter {
@@ -69,44 +69,46 @@ resource "aws_instance" "web_app" {
   vpc_security_group_ids = [aws_security_group.web_app_sg.id]
   subnet_id              = aws_subnet.public_subnet[0].id
 
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
   root_block_device {
     volume_size           = 25
     volume_type           = "gp2"
     delete_on_termination = true
   }
   depends_on = [aws_db_instance.csye6225_db]
-  # 
-  # user_data = (<<-EOF
-  #   #!/bin/bash
-  #   echo "DB_HOST=${aws_db_instance.csye6225_db.endpoint}" >> /opt/csye6225/.env
-  #   # app_port
-  #   echo "DB_USER=${aws_db_instance.csye6225_db.username}" >> /opt/csye6225/.env
-  #   echo "DB_PASSWORD=${var.db_password}" >> /opt/csye6225/.env
-  #   echo "DB_NAME=${aws_db_instance.csye6225_db.db_name}" >> /opt/csye6225/.env
-  #   systemctl restart webapp.service
-  # EOF
-  # )
-  user_data = (<<-EOF
-  #!/bin/bash
-  echo "DB_HOST=$(echo ${aws_db_instance.csye6225_db.endpoint} | cut -d':' -f1)" > /opt/csye6225/.env
-  echo "DB_PORT=${var.db_port}" >> /opt/csye6225/.env
-  echo "DB_USER=${aws_db_instance.csye6225_db.username}" >> /opt/csye6225/.env
-  echo "DB_PASSWORD=${var.db_password}" >> /opt/csye6225/.env
-  echo "APP_PORT=${var.app_port}" >> /opt/csye6225/.env
-  echo "DB_NAME=${aws_db_instance.csye6225_db.db_name}" >> /opt/csye6225/.env
+  # echo "S3_BUCKET_NAME=${aws_s3_bucket_lifecycle_configuration.bucket_lifecycle.id}" >> /opt/csye6225/.env 
+  user_data = <<-EOF
+    #!/bin/bash
+    echo "DB_HOST=$(echo ${aws_db_instance.csye6225_db.endpoint} | cut -d':' -f1)" > /opt/csye6225/.env
+    echo "DB_PORT=${var.db_port}" >> /opt/csye6225/.env
+    echo "DB_USER=${aws_db_instance.csye6225_db.username}" >> /opt/csye6225/.env
+    echo "DB_PASSWORD=${var.db_password}" >> /opt/csye6225/.env
+    echo "APP_PORT=${var.app_port}" >> /opt/csye6225/.env
+    echo "DB_NAME=${aws_db_instance.csye6225_db.db_name}" >> /opt/csye6225/.env
+    
+    echo "SENDGRID_API_KEY=${var.sendgrid_api_key}" >> /opt/csye6225/.env
 
-  # Debug output
-  echo "Environment variables:" > /tmp/debug_env.log
-  cat /opt/csye6225/.env >> /tmp/debug_env.log
+    echo "S3_BUCKET_NAME=${aws_s3_bucket.app_bucket.bucket}" >> /opt/csye6225/.env
+    echo "AWS_REGION=${var.region}" >> /opt/csye6225/.env
 
-  systemctl restart webapp.service
+    sudo touch /var/log/webapp.log
+    sudo chown csye6225:csye6225 /var/log/webapp.log
+    sudo chmod 644 /var/log/webapp.log
+
+    # Start CloudWatch agent
+    sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+    # Start CloudWatch agent
+    sudo systemctl start amazon-cloudwatch-agent
+    
+    # Restart webapp service
+    systemctl restart webapp.service
   EOF
-  )
 
   disable_api_termination = false
 
+
   tags = {
-    Name = "${var.project_name}-a05-trial01"
+    Name = "${var.project_name}-a06-trial01"
   }
 }
 
