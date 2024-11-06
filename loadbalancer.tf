@@ -20,11 +20,11 @@ resource "aws_lb_target_group" "app_tg" {
     path                = "/healthz"
     port                = var.app_port
     protocol            = "HTTP"
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 10
-    matcher             = "200"
+    interval            = var.health_check_interval
+    timeout             = var.health_check_timeout
+    healthy_threshold   = var.healthy_threshold
+    unhealthy_threshold = var.unhealthy_threshold
+    matcher             = var.health_check_matcher
   }
 }
 
