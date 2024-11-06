@@ -151,19 +151,17 @@ resource "aws_db_parameter_group" "custom_pg" {
     value        = "100"
     apply_method = "pending-reboot"
   }
-
-  # Add more parameters as needed
 }
 
 resource "aws_db_instance" "csye6225_db" {
-  identifier           = "csye6225"
-  engine               = "postgres"    # your chosen db engine
-  engine_version       = "14.13"       # Adjust based on your chosen version
-  instance_class       = "db.t3.micro" # CHECK THE DOCS FOR THE RIGHT INSTANCE CLASS
-  allocated_storage    = 20
-  db_name              = "csye6225"
-  username             = "csye6225"
-  password             = var.db_password # Use a variable for the password
+  identifier           = var.db_identifier
+  engine               = var.db_engine
+  engine_version       = var.db_engine_version
+  instance_class       = var.db_instance_class
+  allocated_storage    = var.db_allocated_storage
+  db_name              = var.db_name
+  username             = var.db_username
+  password             = var.db_password
   parameter_group_name = aws_db_parameter_group.custom_pg.name
   skip_final_snapshot  = true
   multi_az             = false
