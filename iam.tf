@@ -225,25 +225,23 @@ resource "aws_iam_instance_profile" "ec2_profile" {
   role = aws_iam_role.ec2_role.name
 }
 
+# // ------- A08 Addition -------
+# resource "aws_iam_role" "lambda_exec" {
+#   name = "serverless_lambda"
 
-# resource "aws_iam_policy" "custom_s3_policy" {
-#   name        = "custom_s3_policy"
-#   path        = "/"
-#   description = "Custom S3 policy for EC2 instances"
-
-#   policy = jsonencode({
+#   assume_role_policy = jsonencode({
 #     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Effect = "Allow"
-#         Action = [
-#           "s3:*"
-#         ]
-#         Resource = [
-#           "arn:aws:s3:::${aws_s3_bucket.app_bucket.bucket}",
-#           "arn:aws:s3:::${aws_s3_bucket.app_bucket.bucket}/*"
-#         ]
+#     Statement = [{
+#       Action = "sts:AssumeRole"
+#       Effect = "Allow"
+#       Principal = {
+#         Service = "lambda.amazonaws.com"
 #       }
-#     ]
+#     }]
 #   })
+# }
+
+# resource "aws_iam_role_policy_attachment" "lambda_policy" {
+#   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+#   role       = aws_iam_role.lambda_exec.name
 # }

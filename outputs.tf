@@ -12,3 +12,8 @@ output "load_balancer_dns" {
   value       = aws_lb.app_lb.dns_name
   description = "The DNS name of the load balancer"
 }
+
+# Output the SNS topic ARN (you'll need this in your application)
+output "sns_topic_arn" {
+  value = aws_sns_topic.user_verification.arn
+}
