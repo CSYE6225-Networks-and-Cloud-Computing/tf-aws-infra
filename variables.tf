@@ -272,3 +272,8 @@ variable "db_name" {
   type        = string
   default     = "csye6225"
 }
+
+variable "deployment_package" {
+  type    = string
+  default = "serverless-fork.zip"
+}

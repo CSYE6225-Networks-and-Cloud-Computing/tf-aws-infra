@@ -59,7 +59,7 @@ data "aws_ami" "custom_ami" {
   //edit AMI name here!!!
   filter {
     name   = "name"
-    values = ["ami_a06-1730932583"]
+    values = ["ami_a06-1731518055"]
   }
 
   filter {
@@ -218,3 +218,4 @@ resource "aws_security_group" "load_balancer_sg" {
     Name = "${var.project_name}-lb-sg"
   }
 }
+

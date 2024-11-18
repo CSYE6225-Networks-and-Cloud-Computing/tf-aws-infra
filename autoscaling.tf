@@ -25,6 +25,7 @@ resource "aws_launch_template" "app_launch_template" {
     echo "SENDGRID_API_KEY=${var.sendgrid_api_key}" >> /opt/csye6225/.env
     echo "S3_BUCKET_NAME=${aws_s3_bucket.app_bucket.bucket}" >> /opt/csye6225/.env
     echo "AWS_REGION=${var.region}" >> /opt/csye6225/.env
+    echo "SNS_TOPIC_ARN=${aws_sns_topic.user_verification.arn}" >> /opt/csye6225/.env
     
     # creating log file to store logs from CloudWatch
     sudo touch /var/log/webapp.log
