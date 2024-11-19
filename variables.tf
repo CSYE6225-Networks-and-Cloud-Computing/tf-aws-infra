@@ -277,3 +277,19 @@ variable "deployment_package" {
   type    = string
   default = "serverless-fork.zip"
 }
+
+variable "serverless_bucket_name" {
+  type = string
+}
+
+variable "domain_name" {
+  type = string
+}
+
+variable "route53_zone_id" {
+  type = string
+}
+
+variable "profile" {
+  type = string
+}
