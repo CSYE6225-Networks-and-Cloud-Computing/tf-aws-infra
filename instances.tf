@@ -59,7 +59,7 @@ data "aws_ami" "custom_ami" {
   //edit AMI name here!!!
   filter {
     name   = "name"
-    values = ["ami_a06-1731518055"]
+    values = ["ami_a08-1731958376"]
   }
 
   filter {
