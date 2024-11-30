@@ -15,5 +15,13 @@ output "load_balancer_dns" {
 
 # Output the SNS topic ARN (you'll need this in your application)
 output "sns_topic_arn" {
-  value = aws_sns_topic.user_verification.arn
+  value       = aws_sns_topic.user_verification.arn
+  description = "value of the SNS topic ARN"
 }
+
+# Output the RDS database password
+# output "db_password" {
+#   value       = random_password.db_password.result
+#   description = "The randomly generated password for the database"
+#   sensitive   = true
+# }
