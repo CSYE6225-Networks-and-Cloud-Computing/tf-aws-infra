@@ -168,11 +168,13 @@ resource "aws_secretsmanager_secret" "db_password" {
 }
 
 resource "aws_secretsmanager_secret_version" "db_password_version" {
-  secret_id = aws_secretsmanager_secret.db_password.id
-  # string_value  = random_password.db_password.result
+  secret_id     = aws_secretsmanager_secret.db_password.id
   secret_string = jsonencode({ password = random_password.db_password.result })
-  # sensitive = true
 }
+
+# data "aws_secretsmanager_secret_version" "db_password_version" {
+#   secret_id = aws_secretsmanager_secret.db_password.id
+# }
 // end.
 
 // RDS instance
@@ -185,7 +187,8 @@ resource "aws_db_instance" "csye6225_db" {
   db_name           = var.db_name
   username          = var.db_username
   # password          = var.db_password
-  password          = random_password.db_password.result
+  password = random_password.db_password.result
+  # password          = jsondecode(data.aws_secretsmanager_secret_version.db_password_version.secret_string)["password"]
   kms_key_id        = aws_kms_key.rds_kms_key.arn
   storage_encrypted = true
 
