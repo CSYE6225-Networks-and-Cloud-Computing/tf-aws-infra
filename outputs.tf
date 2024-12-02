@@ -4,7 +4,7 @@ output "s3_bucket_name" {
 }
 
 output "app_url" {
-  value       = "http://${aws_route53_record.webapp.name}:${var.app_port}"
+  value       = "https://${aws_route53_record.webapp.name}:${var.app_port}"
   description = "The URL of the web application"
 }
 
