@@ -313,3 +313,8 @@ variable "alias_secret_manager_key" {
   description = "Alias for Secrets Manager KMS key"
   default     = "csye6225-secrets-key"
 }
+
+variable "dev_ssl_cert_arn" {
+  description = "ARN of the SSL certificate for the dev environment"
+  type        = string
+}
