@@ -13,6 +13,7 @@ This repository contains Terraform configuration files to set up an AWS networki
   - [Installation](#installation)
   - [Usage](#usage)
   - [Variables](#variables)
+  - [CLI Command for Certificate](#cli-command-for-certificate)
   - [Continuous Integration](#continuous-integration)
   - [Contributing](#contributing)
 
@@ -77,6 +78,15 @@ You can customize the following variables in your `.tfvars` file or by passing t
 - `public_cidrs`: List of CIDR blocks for public subnets
 - `private_cidrs`: List of CIDR blocks for private subnets
 - `public_route_cidr`: Destination CIDR block for the public route (e.g., `0.0.0.0/0`)
+
+## CLI Command for Certificate
+
+```bash
+   aws acm import-certificate \
+     --certificate fileb://certificate.pem \
+     --private-key fileb://privateKey.pem \
+     --certificate-chain fileb://certificateChain.pem \
+     --region us-east-1
 
 ## Continuous Integration
 
