@@ -87,7 +87,7 @@ You can customize the following variables in your `.tfvars` file or by passing t
      --private-key fileb://privateKey.pem \
      --certificate-chain fileb://certificateChain.pem \
      --region us-east-1
-
+```
 ## Continuous Integration
 
 This repository uses GitHub Actions for Continuous Integration. Every time a pull request is created, the following checks will be performed:
