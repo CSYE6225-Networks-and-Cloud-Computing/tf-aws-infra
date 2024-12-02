@@ -153,15 +153,42 @@ resource "aws_db_parameter_group" "custom_pg" {
   }
 }
 
+// A09 - RDS instance - password management
+resource "random_password" "db_password" {
+  length  = 16
+  special = false
+
+}
+
+resource "aws_secretsmanager_secret" "db_password" {
+  name                    = "db-password"
+  kms_key_id              = aws_kms_key.secret_manager_key.arn
+  recovery_window_in_days = 0
+
+}
+
+resource "aws_secretsmanager_secret_version" "db_password_version" {
+  secret_id = aws_secretsmanager_secret.db_password.id
+  # string_value  = random_password.db_password.result
+  secret_string = jsonencode({ password = random_password.db_password.result })
+  # sensitive = true
+}
+// end.
+
+// RDS instance
 resource "aws_db_instance" "csye6225_db" {
-  identifier           = var.db_identifier
-  engine               = var.db_engine
-  engine_version       = var.db_engine_version
-  instance_class       = var.db_instance_class
-  allocated_storage    = var.db_allocated_storage
-  db_name              = var.db_name
-  username             = var.db_username
-  password             = var.db_password
+  identifier        = var.db_identifier
+  engine            = var.db_engine
+  engine_version    = var.db_engine_version
+  instance_class    = var.db_instance_class
+  allocated_storage = var.db_allocated_storage
+  db_name           = var.db_name
+  username          = var.db_username
+  # password          = var.db_password
+  password          = random_password.db_password.result
+  kms_key_id        = aws_kms_key.rds_kms_key.arn
+  storage_encrypted = true
+
   parameter_group_name = aws_db_parameter_group.custom_pg.name
   skip_final_snapshot  = true
   multi_az             = false

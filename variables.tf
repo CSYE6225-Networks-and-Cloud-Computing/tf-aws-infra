@@ -293,3 +293,23 @@ variable "route53_zone_id" {
 variable "profile" {
   type = string
 }
+
+variable "alias_ebs_key" {
+  description = "Alias for EC2 EBS KMS key"
+  default     = "csye6225-ebs-key"
+}
+
+variable "alias_rds_key" {
+  description = "Alias for RDS KMS key"
+  default     = "csye6225-rds-key"
+}
+
+variable "alias_s3_key" {
+  description = "Alias for S3 KMS key"
+  default     = "csye6225-s3-key"
+}
+
+variable "alias_secret_manager_key" {
+  description = "Alias for Secrets Manager KMS key"
+  default     = "csye6225-secrets-key"
+}

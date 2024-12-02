@@ -17,7 +17,8 @@
 # }
 
 data "aws_s3_bucket" "lambda_code_bucket" {
-  bucket = "serverless-bucket-hir-demo"
+  # bucket = "serverless-bucket-hir-demo"
+  bucket = "serverless-bucket-hir-new"
 }
 
 resource "aws_lambda_function" "verify_user" {
@@ -29,11 +30,12 @@ resource "aws_lambda_function" "verify_user" {
   runtime       = "nodejs20.x"
 
   environment {
-    variables = {
-      SENDGRID_API_KEY = var.sendgrid_api_key
-      BASE_URL         = var.demo_domain_name
-      SNS_TOPIC_ARN    = aws_sns_topic.user_verification.arn
-    }
+    # variables = {
+    #   SENDGRID_API_KEY = var.sendgrid_api_key
+    #   SENDGRID_SECRET_NAME = aws_secretsmanager_secret.sendgrid_api_key.name // A09 - secrets manager retrieval
+    #   BASE_URL      = var.demo_domain_name
+    #   SNS_TOPIC_ARN = aws_sns_topic.user_verification.arn
+    # }
   }
 }
 
@@ -113,4 +115,3 @@ resource "aws_iam_role_policy_attachment" "lambda_s3_policy_attachment" {
   policy_arn = aws_iam_policy.lambda_s3_policy.arn
   role       = aws_iam_role.lambda_exec.name
 }
- 

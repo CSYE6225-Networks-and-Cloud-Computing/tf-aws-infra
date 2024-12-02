@@ -14,19 +14,38 @@ resource "aws_launch_template" "app_launch_template" {
     name = aws_iam_instance_profile.ec2_profile.name
   }
 
+  # A09 updates - EBS encryption
+  block_device_mappings {
+    device_name = "/dev/xvda"
+
+    ebs {
+      delete_on_termination = true
+      volume_size           = 50
+      volume_type           = "gp2"
+      encrypted             = true
+      kms_key_id            = aws_kms_key.ec2_kms_key.arn
+    }
+  }
+
+
+  # ----- addition of kms stuff here -----
+  # echo "SENDGRID_SECRET_NAME=${aws_secretsmanager_secret.sendgrid_api_key.name}" >> /opt/csye6225/.env
+  # echo "DOMAIN=${aws_secretsmanager_secret.domain.name}" >> /opt/csye6225/.env
+  #  echo "DB_PASSWORD=${var.db_password}" >> /opt/csye6225/.env
+
   user_data = base64encode(<<-EOF
     #!/bin/bash
     echo "DB_HOST=$(echo ${aws_db_instance.csye6225_db.endpoint} | cut -d':' -f1)" > /opt/csye6225/.env
     echo "DB_PORT=${var.db_port}" >> /opt/csye6225/.env
     echo "DB_USER=${aws_db_instance.csye6225_db.username}" >> /opt/csye6225/.env
-    echo "DB_PASSWORD=${var.db_password}" >> /opt/csye6225/.env
+    echo "DB_PASSWORD=${random_password.db_password.result}" >> /opt/csye6225/.env
     echo "APP_PORT=${var.app_port}" >> /opt/csye6225/.env
     echo "DB_NAME=${aws_db_instance.csye6225_db.db_name}" >> /opt/csye6225/.env
     echo "SENDGRID_API_KEY=${var.sendgrid_api_key}" >> /opt/csye6225/.env
     echo "S3_BUCKET_NAME=${aws_s3_bucket.app_bucket.bucket}" >> /opt/csye6225/.env
     echo "AWS_REGION=${var.region}" >> /opt/csye6225/.env
     echo "SNS_TOPIC_ARN=${aws_sns_topic.user_verification.arn}" >> /opt/csye6225/.env
-    
+
     # creating log file to store logs from CloudWatch
     sudo touch /var/log/webapp.log
     sudo chown csye6225:csye6225 /var/log/webapp.log
