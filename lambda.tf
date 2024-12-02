@@ -18,7 +18,8 @@
 
 data "aws_s3_bucket" "lambda_code_bucket" {
   # bucket = "serverless-bucket-hir-demo"
-  bucket = "serverless-bucket-hir-new"
+  # bucket = "serverless-bucket-hir-new"
+  bucket = "serverless-bucket-hir-https"
 }
 
 resource "aws_lambda_function" "verify_user" {

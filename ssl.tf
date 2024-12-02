@@ -32,11 +32,11 @@ data "aws_acm_certificate" "ssl_certificate" {
   statuses    = ["ISSUED"]
 }
 
-data "aws_acm_certificate" "dev_ssl_certificate" {
-  domain      = var.dev_domain_name
-  most_recent = true
-  statuses    = ["ISSUED"]
-}
+# data "aws_acm_certificate" "dev_ssl_certificate" {
+#   domain      = var.dev_domain_name
+#   most_recent = true
+#   statuses    = ["ISSUED"]
+# }
 
 resource "aws_lb_listener" "my_https_listener" {
   load_balancer_arn = aws_lb.app_lb.arn
@@ -60,3 +60,4 @@ resource "aws_lb_listener" "my_https_listener" {
 #     --private-key fileb://privateKey.pem \
 #     --certificate-chain fileb://certificateChain.pem \
 #     --region us-east-1
+# ```
